@@ -5,7 +5,6 @@ import db from "@/db/db"
 import OrderHistoryEmail from "@/email/OrderHistory"
 import { Resend } from "resend"
 import { z } from "zod"
-import type { Order } from "@prisma/client"
 
 const emailSchema = z.string().email()
 const resend = new Resend(process.env.RESEND_API_KEY as string)

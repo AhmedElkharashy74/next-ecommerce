@@ -1,4 +1,3 @@
-//@ts-ignore
 "use server"
 
 import db from "@/db/db"
@@ -8,7 +7,6 @@ import { z } from "zod"
 
 const emailSchema = z.string().email()
 const resend = new Resend(process.env.RESEND_API_KEY as string)
-
 
 export async function emailOrderHistory(
   prevState: unknown,
@@ -57,14 +55,14 @@ export async function emailOrderHistory(
     from: `Support <${process.env.SENDER_EMAIL}>`,
     to: user.email,
     subject: "Order History",
-    react: <OrderHistoryEmail orders={user.orders.map((order) => ({
+    react: <OrderHistoryEmail orders={user.orders.map((order: typeof user.orders[number]) => ({
       id: order.id,
       pricePaidInCents: order.pricePaidInCents,
       createdAt: order.createdAt,
       status: order.status,
       trackingNumber: order.trackingNumber ?? undefined,
       shippingAddress: order.shippingAddress,
-      product: order.product, // Ensure product is included
+      product: order.product,
     }))} />,
   })
 

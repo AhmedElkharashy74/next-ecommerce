@@ -4,6 +4,7 @@ import db from "@/db/db"
 import OrderHistoryEmail from "@/email/OrderHistory"
 import { Resend } from "resend"
 import { z } from "zod"
+import type { Order } from "@prisma/client"
 
 const emailSchema = z.string().email()
 const resend = new Resend(process.env.RESEND_API_KEY as string)
@@ -56,9 +57,14 @@ export async function emailOrderHistory(
     from: `Support <${process.env.SENDER_EMAIL}>`,
     to: user.email,
     subject: "Order History",
-    react: <OrderHistoryEmail orders={user.orders.map(order => ({
-      ...order,
+    react: <OrderHistoryEmail orders={user.orders.map((order) => ({
+      id: order.id,
+      pricePaidInCents: order.pricePaidInCents,
+      createdAt: order.createdAt,
+      status: order.status,
       trackingNumber: order.trackingNumber ?? undefined,
+      shippingAddress: order.shippingAddress,
+      product: order.product, // Ensure product is included
     }))} />,
   })
 

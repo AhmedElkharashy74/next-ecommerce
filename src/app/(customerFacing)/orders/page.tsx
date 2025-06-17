@@ -5,6 +5,12 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/authOptions"
 import { ProductCard } from "@/components/ProductCard"
 import {OrderCard} from "@/components/OrderCard"
+import {Order , Product} from "@prisma/client"
+
+
+type OrderWithProduct = Order & {
+  product: Product
+}
 
 export default async function MyOrdersPage() {
   const session = await getServerSession(authOptions)
@@ -21,7 +27,7 @@ export default async function MyOrdersPage() {
             <p>No orders found.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {orders.map((order) => (
+            {(orders as OrderWithProduct[]).map((order) => (
               <OrderCard
                 key={order.id}
                 product={order.product}

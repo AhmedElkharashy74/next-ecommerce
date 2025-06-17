@@ -4,7 +4,8 @@ import Stripe from "stripe"
 import { Resend } from "resend"
 import PurchaseReceiptEmail from "@/email/PurchaseReceipt"
 // import { hashPassword } from "@/lib/isValidPassword"
-import { randomUUID } from "crypto"
+// import { randomUUID } from "crypto"
+import type { Prisma } from "@prisma/client"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   // apiVersion: "2024-08-01",
@@ -59,7 +60,7 @@ export async function POST(req: NextRequest) {
           .filter(Boolean)
           .join(", ") || "No shipping address provided"
 
-      const result = await db.$transaction(async (tx) => {
+      const result = await db.$transaction(async (tx : Prisma.TransactionClient) => {
         const product = await tx.product.findUnique({
           where: { id: productId },
           select: {

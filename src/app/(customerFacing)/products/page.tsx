@@ -4,6 +4,18 @@ import { SearchBar } from "@/components/SearchBar"
 import db from "@/db/db"
 import { cache } from "@/lib/cache"
 import { Suspense } from "react"
+type Product = {
+  id: string
+  name: string
+  priceInCents: number
+  imagePath: string
+  description: string
+  sku: string
+  stockQuantity: number
+  isAvailableForPurchase: boolean
+  createdAt: Date
+  updatedAt: Date
+}
 
 const getProducts = cache((search?: string) => {
   return db.product.findMany({
@@ -52,7 +64,7 @@ export default function ProductsPage({
 }
 
 async function ProductsSuspense({ search }: { search?: string }) {
-  const products = await getProducts(search)
+  const products : Product[] = await getProducts(search)
 
   if (products.length === 0) {
     return (

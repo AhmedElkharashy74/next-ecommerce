@@ -3,10 +3,32 @@ import MyOrdersForm from "./MyOrdersForm"
 import { getOrdersByEmail } from "../_actions/orders"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/authOptions"
-import { ProductCard } from "@/components/ProductCard"
+// import { ProductCard } from "@/components/ProductCard"
 import {OrderCard} from "@/components/OrderCard"
-import {Order , Product} from "@prisma/client"
+// import { Order, Product } from "@prisma/client"
 
+
+type Product = {
+  id: string
+  name: string
+  description: string
+  priceInCents: number
+  imagePath: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Order = {
+  id: string
+  userId: string
+  productId: string
+  pricePaidInCents: number
+  status: string
+  trackingNumber: string | null
+  createdAt: Date
+  updatedAt: Date
+  shippingAddress: string
+}
 
 type OrderWithProduct = Order & {
   product: Product

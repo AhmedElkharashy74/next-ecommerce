@@ -2,10 +2,23 @@ import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard"
 import { Button } from "@/components/ui/button"
 import db from "@/db/db"
 import { cache } from "@/lib/cache"
-import { Product } from "@prisma/client"
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
 import { Suspense } from "react"
+
+// Define the Product type locally
+type Product = {
+  id: string
+  name: string
+  priceInCents: number
+  imagePath: string
+  description: string
+  sku: string
+  stockQuantity: number
+  isAvailableForPurchase: boolean
+  createdAt: Date
+  updatedAt: Date
+}
 
 const getMostPopularProducts = cache(
   () => {

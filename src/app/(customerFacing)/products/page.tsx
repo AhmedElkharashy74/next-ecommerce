@@ -76,5 +76,5 @@ async function ProductsSuspense({ search }: { search?: string }) {
     )
   }
 
-  return products.map(product => <ProductCard key={product.id} {...product} />)
+  return products.map((product : Product) => <ProductCard key={product.id} {...product} />)
 }

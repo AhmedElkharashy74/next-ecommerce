@@ -94,7 +94,7 @@ async function ProductSuspense({
 }: {
   productsFetcher: () => Promise<Product[]>
 }) {
-  return (await productsFetcher()).map(product => (
+  return (await productsFetcher()).map((product : Product) => (
     <ProductCard key={product.id} {...product} />
   ))
 }

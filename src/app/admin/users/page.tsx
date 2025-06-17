@@ -28,6 +28,12 @@ function getUsers() {
   })
 }
 
+type User = {
+  id: string
+  email: string
+  orders: { pricePaidInCents: number }[]
+}
+
 export default function UsersPage() {
   return (
     <>
@@ -55,7 +61,7 @@ async function UsersTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users.map(user => (
+        {users.map((user : User) => (
           <TableRow key={user.id}>
             <TableCell>{user.email}</TableCell>
             <TableCell>{formatNumber(user.orders.length)}</TableCell>

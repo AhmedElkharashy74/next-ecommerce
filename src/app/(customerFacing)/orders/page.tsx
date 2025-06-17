@@ -28,6 +28,7 @@ type Order = {
   createdAt: Date
   updatedAt: Date
   shippingAddress: string
+  product: Product
 }
 
 type OrderWithProduct = Order & {
@@ -49,7 +50,7 @@ export default async function MyOrdersPage() {
             <p>No orders found.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {(orders as OrderWithProduct[]).map((order) => (
+            {(orders as OrderWithProduct[]).map((order : Order )  => (
               <OrderCard
                 key={order.id}
                 product={order.product}

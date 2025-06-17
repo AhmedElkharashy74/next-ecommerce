@@ -27,6 +27,20 @@ type OrderHistoryEmailProps = {
   }[]
 }
 
+type Order = {
+  id: string
+  pricePaidInCents: number
+  createdAt: Date
+  status: string
+  trackingNumber?: string
+  shippingAddress: string
+  product: {
+    name: string
+    imagePath: string
+    description: string
+  }
+}
+
 OrderHistoryEmail.PreviewProps = {
   orders: [
     {
@@ -68,7 +82,7 @@ export default function OrderHistoryEmail({ orders }: OrderHistoryEmailProps) {
         <Body className="font-sans bg-white">
           <Container className="max-w-xl">
             <Heading>Order History</Heading>
-            {orders.map((order, index) => (
+            {orders.map((order : Order, index) => (
               <React.Fragment key={order.id}>
                 <OrderInformation
                   order={order}

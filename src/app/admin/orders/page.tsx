@@ -18,6 +18,13 @@ import {
 import { MoreVertical } from "lucide-react"
 import { DeleteDropDownItem } from "./_components/OrderActions"
 
+type Order = {
+  id: string
+  pricePaidInCents: number
+  product: { name: string }
+  user: { email: string }
+}
+
 function getOrders() {
   return db.order.findMany({
     select: {
@@ -57,7 +64,7 @@ async function OrdersTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {orders.map(order => (
+        {orders.map((order : Order) => (
           <TableRow key={order.id}>
             <TableCell>{order.product.name}</TableCell>
             <TableCell>{order.user.email}</TableCell>

@@ -34,7 +34,7 @@ export default async function MyOrdersPage() {
                 pricePaidInCents={order.pricePaidInCents}
                 status={order.status}
                 trackingNumber={order.trackingNumber}
-                createdAt={order.createdAt}
+                createdAt={order.createdAt.toISOString()}
                 shippingAddress= {order.shippingAddress}
               />
             ))}

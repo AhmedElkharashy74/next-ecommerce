@@ -4,10 +4,10 @@ import {
   Moon,
   SunMedium,
   Twitter,
-  type Icon as LucideIcon,
+  LucideProps as LucideIconProps,
 } from "lucide-react";
 
-export type Icon = LucideIcon;
+export type Icon = LucideIconProps;
 
 export const Icons = {
   sun: SunMedium,

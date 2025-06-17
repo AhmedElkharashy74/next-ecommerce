@@ -8,6 +8,7 @@ import { z } from "zod"
 const emailSchema = z.string().email()
 const resend = new Resend(process.env.RESEND_API_KEY as string)
 
+
 export async function emailOrderHistory(
   prevState: unknown,
   formData: FormData
@@ -55,7 +56,10 @@ export async function emailOrderHistory(
     from: `Support <${process.env.SENDER_EMAIL}>`,
     to: user.email,
     subject: "Order History",
-    react: <OrderHistoryEmail orders={user.orders} />,
+    react: <OrderHistoryEmail orders={user.orders.map(order => ({
+      ...order,
+      trackingNumber: order.trackingNumber ?? undefined,
+    }))} />,
   })
 
   if (data.error) {

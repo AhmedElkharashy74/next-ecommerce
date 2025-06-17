@@ -11,8 +11,8 @@ const getProducts = cache((search?: string) => {
       isAvailableForPurchase: true,
       OR: search
         ? [
-            { name: { contains: search, mode: "insensitive" } },
-            { description: { contains: search, mode: "insensitive" } },
+            { name: { contains: search } },
+            { description: { contains: search } },
           ]
         : undefined,
     },

@@ -8,8 +8,19 @@ import { formatCurrency } from "@/lib/formatters"
 import { useState } from "react"
 import { addProduct, updateProduct } from "../../_actions/products"
 import { useFormState, useFormStatus } from "react-dom"
-import { Product } from "@prisma/client"
+// import { Product } from "@prisma/client"
 import Image from "next/image"
+
+
+type Product = {
+  id: string
+  name: string
+  priceInCents: number
+  sku: string
+  stockQuantity: number
+  description: string
+  imagePath: string
+}
 
 export function ProductForm({ product }: { product?: Product | null }) {
   const [error, action] = useFormState(

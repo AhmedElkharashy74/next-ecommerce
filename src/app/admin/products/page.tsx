@@ -24,6 +24,16 @@ import {
   DeleteDropdownItem,
 } from "./_components/ProductActions"
 
+type Product = {
+  id: string
+  name: string
+  priceInCents: number
+  sku: string
+  stockQuantity: number
+  isAvailableForPurchase: boolean
+  _count: { orders: number }
+}
+
 export default function AdminProductsPage() {
   return (
     <>
@@ -39,9 +49,9 @@ export default function AdminProductsPage() {
 }
 
 async function ProductsTable() {
-  const products = await db.product.findMany({
+  const products : Product[] = await db.product.findMany({
     select: {
-      id: true,
+      id: true, 
       name: true,
       priceInCents: true,
       sku: true,
@@ -72,7 +82,7 @@ async function ProductsTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {products.map(product => (
+        {products.map((product : Product) => (
           <TableRow key={product.id}>
             <TableCell>
               {product.isAvailableForPurchase ? (

@@ -2,7 +2,7 @@
 import MyOrdersForm from "./MyOrdersForm"
 import { getOrdersByEmail } from "../_actions/orders"
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from "@/lib/authOptions"
 import { ProductCard } from "@/components/ProductCard"
 import {OrderCard} from "@/components/OrderCard"
 

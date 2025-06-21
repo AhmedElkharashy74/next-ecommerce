@@ -1,4 +1,3 @@
-// app/orders/MyOrdersForm.tsx
 "use client"
 
 import { emailOrderHistory } from "@/actions/orders"
@@ -15,11 +14,21 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useFormState, useFormStatus } from "react-dom"
 
+type FormState = {
+  error?: string
+  message?: string
+}
+
+const initialState: FormState = {}
+
 export default function MyOrdersForm() {
-  const [data, action] = useFormState(emailOrderHistory, {})
+  const [state, formAction] = useFormState<FormState, FormData>(
+    emailOrderHistory,
+    initialState
+  )
 
   return (
-    <form action={action}>
+    <form action={formAction}>
       <Card>
         <CardHeader>
           <CardTitle>My Orders</CardTitle>
@@ -30,10 +39,16 @@ export default function MyOrdersForm() {
         <CardContent>
           <Label htmlFor="email">Email</Label>
           <Input type="email" name="email" id="email" required />
-          {data.error && <p className="text-destructive">{data.error}</p>}
+          {state.error && (
+            <p className="text-destructive text-sm mt-2">{state.error}</p>
+          )}
         </CardContent>
         <CardFooter>
-          {data.message ? <p>{data.message}</p> : <SubmitButton />}
+          {state.message ? (
+            <p className="text-green-600 text-sm">{state.message}</p>
+          ) : (
+            <SubmitButton />
+          )}
         </CardFooter>
       </Card>
     </form>

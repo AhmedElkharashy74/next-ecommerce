@@ -30,7 +30,7 @@ function getUsers() {
 
 type User = {
   id: string
-  email: string
+  email: string | null
   orders: { pricePaidInCents: number }[]
 }
 

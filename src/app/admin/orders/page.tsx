@@ -22,7 +22,7 @@ type Order = {
   id: string
   pricePaidInCents: number
   product: { name: string }
-  user: { email: string }
+  user: { email: string | null }
 }
 
 function getOrders() {

@@ -1,3 +1,5 @@
+// app/admin/orders/page.tsx
+
 import {
   Table,
   TableBody,
@@ -17,7 +19,16 @@ import {
 import { MoreVertical } from "lucide-react"
 import { DeleteDropDownItem } from "./_components/UserActions"
 
-function getUsers() {
+export default function UsersPage() {
+  return (
+    <>
+      <PageHeader>Customers</PageHeader>
+      <UsersTable />
+    </>
+  )
+}
+
+async function getUsers() {
   return db.user.findMany({
     select: {
       id: true,
@@ -28,25 +39,12 @@ function getUsers() {
   })
 }
 
-type User = {
-  id: string
-  email: string | null
-  orders: { pricePaidInCents: number }[]
-}
-
-export default function UsersPage() {
-  return (
-    <>
-      <PageHeader>Customers</PageHeader>
-      <UsersTable />
-    </>
-  )
-}
+type User = Awaited<ReturnType<typeof getUsers>>[number]
 
 async function UsersTable() {
   const users = await getUsers()
 
-  if (users.length === 0) return <p>No customers found</p>
+  if (users.length === 0) return <p>No customers found.</p>
 
   return (
     <Table>
@@ -61,13 +59,13 @@ async function UsersTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {users.map((user : User) => (
+        {users.map((user) => (
           <TableRow key={user.id}>
-            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.email ?? "N/A"}</TableCell>
             <TableCell>{formatNumber(user.orders.length)}</TableCell>
             <TableCell>
               {formatCurrency(
-                user.orders.reduce((sum, o) => o.pricePaidInCents + sum, 0) /
+                user.orders.reduce((sum, o) => sum + o.pricePaidInCents, 0) /
                   100
               )}
             </TableCell>

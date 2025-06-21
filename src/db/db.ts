@@ -4,9 +4,11 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Prevent multiple instances during dev/hot reload
 export const db =
-  globalForPrisma.prisma ?? new PrismaClient()
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: ["query"], // optional, good for debugging
+  })
 
 if (process.env.NODE_ENV !== "production") {
   globalForPrisma.prisma = db

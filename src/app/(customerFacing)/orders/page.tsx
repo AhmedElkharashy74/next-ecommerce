@@ -1,44 +1,18 @@
-// app/orders/page.tsx
 import MyOrdersForm from "./MyOrdersForm"
 import { getOrdersByEmail } from "../_actions/orders"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/authOptions"
-// import { ProductCard } from "@/components/ProductCard"
-import {OrderCard} from "@/components/OrderCard"
-// import { Order, Product } from "@prisma/client"
+import { OrderCard } from "@/components/OrderCard"
+import { Prisma } from "@prisma/client"
 
-
-type Product = {
-  id: string
-  name: string
-  description: string
-  priceInCents: number
-  imagePath: string
-  createdAt: Date
-  updatedAt: Date
-}
-
-type Order = {
-  id: string
-  userId: string
-  productId: string
-  pricePaidInCents: number
-  status: string
-  trackingNumber: string | null
-  createdAt: Date
-  updatedAt: Date
-  shippingAddress: string
-  product: Product
-}
-
-type OrderWithProduct = Order & {
-  product: Product
-}
+type OrderWithProduct = Prisma.OrderGetPayload<{
+  include: { product: true }
+}>
 
 export default async function MyOrdersPage() {
   const session = await getServerSession(authOptions)
   const email = session?.user?.email
-  const orders = email ? await getOrdersByEmail(email) : []
+  const orders: OrderWithProduct[] = email ? await getOrdersByEmail(email) : []
 
   return (
     <div>
@@ -50,22 +24,21 @@ export default async function MyOrdersPage() {
             <p>No orders found.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {(orders as OrderWithProduct[]).map((order : Order )  => (
-              <OrderCard
-                key={order.id}
-                product={order.product}
-                pricePaidInCents={order.pricePaidInCents}
-                status={order.status}
-                trackingNumber={order.trackingNumber}
-                createdAt={order.createdAt.toISOString()}
-                shippingAddress= {order.shippingAddress}
-              />
-            ))}
-          </div>
+              {orders.map((order) => (
+                <OrderCard
+                  key={order.id}
+                  product={order.product}
+                  pricePaidInCents={order.pricePaidInCents}
+                  status={order.status}
+                  trackingNumber={order.trackingNumber}
+                  createdAt={order.createdAt.toISOString()}
+                  shippingAddress={order.shippingAddress}
+                />
+              ))}
+            </div>
           )}
         </div>
       )}
     </div>
   )
 }
-

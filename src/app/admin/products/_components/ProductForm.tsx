@@ -8,10 +8,9 @@ import { formatCurrency } from "@/lib/formatters"
 import { useState } from "react"
 import { addProduct, updateProduct } from "../../_actions/products"
 import { useFormState, useFormStatus } from "react-dom"
-// import { Product } from "@prisma/client"
 import Image from "next/image"
 
-
+// Define the Product type
 type Product = {
   id: string
   name: string
@@ -22,8 +21,18 @@ type Product = {
   imagePath: string
 }
 
+// Define the form error state
+type FormState = {
+  name?: string
+  priceInCents?: string
+  sku?: string
+  stockQuantity?: string
+  description?: string
+  image?: string
+}
+
 export function ProductForm({ product }: { product?: Product | null }) {
-  const [error, action] = useFormState(
+  const [formState, action] = useFormState<FormState>(
     product == null ? addProduct : updateProduct.bind(null, product.id),
     {}
   )
@@ -42,8 +51,9 @@ export function ProductForm({ product }: { product?: Product | null }) {
           required
           defaultValue={product?.name || ""}
         />
-        {error.name && <div className="text-destructive">{error.name}</div>}
+        {formState.name && <div className="text-destructive">{formState.name}</div>}
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="priceInCents">Price In Cents</Label>
         <Input
@@ -57,10 +67,11 @@ export function ProductForm({ product }: { product?: Product | null }) {
         <div className="text-muted-foreground">
           {formatCurrency((priceInCents || 0) / 100)}
         </div>
-        {error.priceInCents && (
-          <div className="text-destructive">{error.priceInCents}</div>
+        {formState.priceInCents && (
+          <div className="text-destructive">{formState.priceInCents}</div>
         )}
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="sku">SKU</Label>
         <Input
@@ -70,8 +81,9 @@ export function ProductForm({ product }: { product?: Product | null }) {
           required
           defaultValue={product?.sku || ""}
         />
-        {error.sku && <div className="text-destructive">{error.sku}</div>}
+        {formState.sku && <div className="text-destructive">{formState.sku}</div>}
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="stockQuantity">Stock Quantity</Label>
         <Input
@@ -81,10 +93,11 @@ export function ProductForm({ product }: { product?: Product | null }) {
           required
           defaultValue={product?.stockQuantity || 0}
         />
-        {error.stockQuantity && (
-          <div className="text-destructive">{error.stockQuantity}</div>
+        {formState.stockQuantity && (
+          <div className="text-destructive">{formState.stockQuantity}</div>
         )}
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
         <Textarea
@@ -93,23 +106,25 @@ export function ProductForm({ product }: { product?: Product | null }) {
           required
           defaultValue={product?.description}
         />
-        {error.description && (
-          <div className="text-destructive">{error.description}</div>
+        {formState.description && (
+          <div className="text-destructive">{formState.description}</div>
         )}
       </div>
+
       <div className="space-y-2">
         <Label htmlFor="image">Image</Label>
         <Input type="file" id="image" name="image" required={product == null} />
         {product != null && (
           <Image
             src={product.imagePath}
-            height="400"
-            width="400"
+            height={400}
+            width={400}
             alt="Product Image"
           />
         )}
-        {error.image && <div className="text-destructive">{error.image}</div>}
+        {formState.image && <div className="text-destructive">{formState.image}</div>}
       </div>
+
       <SubmitButton />
     </form>
   )
@@ -117,7 +132,6 @@ export function ProductForm({ product }: { product?: Product | null }) {
 
 function SubmitButton() {
   const { pending } = useFormStatus()
-
   return (
     <Button type="submit" disabled={pending}>
       {pending ? "Saving..." : "Save"}

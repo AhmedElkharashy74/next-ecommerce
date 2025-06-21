@@ -53,7 +53,7 @@ export async function emailOrderHistory(
 
   const data = await resend.emails.send({
     from: `Support <${process.env.SENDER_EMAIL}>`,
-    to: user.email,
+    to: user.email ?? "",
     subject: "Order History",
     react: <OrderHistoryEmail orders={user.orders.map((order: typeof user.orders[number]) => ({
       id: order.id,

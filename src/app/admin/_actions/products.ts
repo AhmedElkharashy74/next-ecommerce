@@ -28,13 +28,13 @@ export async function addProduct(prevState: unknown, formData: FormData) {
   const data = result.data
 
   // await fs.mkdir("public/products", { recursive: true })\
-  try{
-    await fs.mkdir("public", { recursive: true })
-    await fs.mkdir("public/products", { recursive: true })
-  }catch (error ) {
-    console.error("❌ Failed to create required directories:", error)
-    throw new Error("Server misconfiguration: Cannot create upload directories.")
-  }
+  // try{
+  //   await fs.mkdir("public", { recursive: true })
+  //   await fs.mkdir("public/products", { recursive: true })
+  // }catch (error ) {
+  //   console.error("❌ Failed to create required directories:", error)
+  //   throw new Error("Server misconfiguration: Cannot create upload directories.")
+  // }
   const imagePath = `/products/${crypto.randomUUID()}-${data.image.name}`
   await fs.writeFile(
     `public${imagePath}`,
